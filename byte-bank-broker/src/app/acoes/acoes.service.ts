@@ -10,8 +10,14 @@ import { Injectable } from '@angular/core';
 export class AcoesService {
   constructor(private http: HttpClient) {}
 
-  getAcoes(): Observable<AcoesApi> {
-    return this.http.get<AcoesApi>('http://localhost:3000/acoes');
+  getAcoes(): Observable<Acoes> {
+    return this.http.get<AcoesApi>('http://localhost:3000/acoes').pipe(
+      pluck('payload'),
+      // map((retorno) => retorno.payload),
+      map((acoes) => {
+         return acoes.sort((a, b) => this.ordenarPorCodigo(a, b));
+      })
+    );
   }
 
   ordenarPorCodigo(acaoA: Acao, acaoB: Acao): number {
