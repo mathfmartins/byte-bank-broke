@@ -12,7 +12,7 @@ export class AcoesService {
 
   getAcoes(valor?: string): Observable<Acoes> {
     const params = valor ? new HttpParams().append('valor', valor) : undefined;
-    console.log(params)
+
     return this.http
       .get<AcoesApi>('http://localhost:3000/acoes', { params })
       .pipe(
