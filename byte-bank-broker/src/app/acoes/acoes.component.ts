@@ -3,7 +3,7 @@ import { AcoesService } from './acoes.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Acoes, AcoesApi } from './modelo/acoes';
-import { debounceTime, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, filter, switchMap, tap } from 'rxjs/operators';
 @Component({
   selector: 'app-acoes',
   templateUrl: './acoes.component.html',
@@ -24,6 +24,8 @@ export class AcoesComponent implements OnInit {
     this.acoesPeloInput = this.acoesInput.valueChanges.pipe(
       debounceTime(300),
       tap(() => console.log('Observable das Ações filtradas.')),
+      filter((valueInput) => valueInput.length >= 3 || !valueInput.length),
+      tap((value) => console.log(value)),
       switchMap((valueInput) => this.acoesService.getAcoes(valueInput))
     );
 
